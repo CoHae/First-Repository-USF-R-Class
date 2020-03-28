@@ -1,0 +1,27 @@
+---
+title: "My Markdown for a 3D Scatter Plot with Figure Description"
+author: "Cornelia Haerle"
+date: "28 March 2020"  
+output: word_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+if(!require(scatterplot3d)){install.packages("scatterplot3d")}
+library(scatterplot3d)
+```
+
+
+The following is a 3D scatter plot of randomly created data in the range from 0 to 1.
+
+```{r myscatterplot, echo=FALSE, eval=TRUE}
+v1 <- runif(50)
+v2 <- runif(50)
+v3 <- runif(50)
+df <- data.frame(v1, v2, v3)
+scatterplot3d(df, pch = 16, )
+             
+```
+
+Fig 1: Scatter plot 1 
+
