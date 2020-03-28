@@ -1,0 +1,99 @@
+---
+title: "Basics Of R"
+author: "Your Name"
+date: "00 Mon 0000"
+output: word_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Notes on installing R and RStudio
+
+# R is a calculator
+
+```{r rcalc, echo=TRUE, eval=TRUE}
+# You can add examples from the first part of the chapter here 
+```
+
+# Using R Markdown
+
+##Show and Tell: Different ways of using R code in markdown documents
+
+### Show the code and tell us the result
+```{r showandtell, echo=TRUE, eval=TRUE}
+x <- pi/2
+y <- pi/3
+sin(x) + cos(y)
+```
+
+### Show the code, but don't tell us the result
+```{r showdonttell, echo=TRUE, eval=FALSE}
+x <- pi/2
+y <- pi/3
+sin(x) + cos(y)
+```
+
+### Don't show the code, but tell us the result
+```{r telldontshow, echo=FALSE, eval=TRUE}
+x <- pi/2
+y <- pi/3
+sin(x) + cos(y)
+```
+
+### Don't show the code, and don't tell us the result
+```{r donothing, echo=FALSE, eval=FALSE}
+x <- pi/2
+y <- pi/3
+sin(x) + cos(y)
+```
+
+
+# Making your mark
+When you first start your degree, you might be confident that a person with your talents will impress his or her colleagues, and that you will be able to make lasting contributions to your field. Or, you might feel the opposite: sure that everyone around you is brilliant, and just hopeful that you will be allowed to work away without attracting too much notice. Both are very common ways to feel, and as you move through your degree, both feelings are likely to change.  Don't get discouraged! As Dory would say,
+
+  "Just keep swimming,  
+  swimming,  
+  swimming..." 
+
+## The *R Markdown* way
+1. Get a good marker^^1^^
+2. Strike **boldly**
+2. Oops a mistake
+3. Watch out for the people with the erasers!
+
+###^^1^^Suggested marker brands
+* Sharpie
+* Expo
+* Mr. Sketch
+
+# Working with vectors
+
+```{r vectors, echo=TRUE, eval=TRUE}
+# Add your own examples here  
+```
+
+# Generating data
+
+```{r gendata, echo=TRUE, eval=TRUE}
+# Add your own examples here 
+```
+
+# Understanding the R workspace
+
+```{r rworkspace, echo=TRUE, eval=TRUE}
+# Add your own examples here 
+```
+
+# Using packages
+
+```{r usepack, echo=TRUE, eval=TRUE}
+# Add your own examples here 
+```
+
+# Accessing help files
+
+```{r helpme, echo=TRUE, eval=TRUE}
+# Add your own examples here 
+```
