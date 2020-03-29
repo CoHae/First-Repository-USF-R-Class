@@ -1,0 +1,246 @@
+---
+title: "Analysis of Intrinsically Disordered Proteins"
+author: "Report Generator by Cornelia Haerle"
+This is just comment but makes it centered : "University of Florida"
+class: "Introduction to R Programming"
+When: "Spring 2020"
+output: word_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+if(!require(scatterplot3d)){install.packages("scatterplot3d")}
+if(!require(tidyverse)){install.packages("tidyverse")}
+if(!require(readxl)){install.packages("readxl")}
+if(!require(lattice)){install.packages("lattice")}
+if(!require(latticeExtra)){install.packages("latticeExtra")}
+if(!require(plotrix)){install.packages("plotrix")}
+if(!require(base2grob)){install.packages("base2grob")}# for pie3D
+if(!require(ggplotify)){install.packages("ggplotify")}
+if(!require(Rcpp)){install.packages("Rcpp")}
+if(!require(grid)){install.packages("grid")}
+if(!require(gridExtra)){install.packages("gridExtra")}
+library(scatterplot3d)
+library(tidyverse)
+library(readxl)
+library(lattice)
+library(latticeExtra)
+library(plotrix) 
+library(base2grob)
+library(ggplotify)
+library(Rcpp) 
+library(grid)
+library(gridExtra)
+
+```
+
+## Introduction
+
+```{r introduction, echo=FALSE, eval=TRUE}
+# have the desired text file in working directory under name "textfile.txt"
+  textfile <- read_file("textfile.txt") 
+textfile
+```
+
+## Methods
+```{r methodssection), eval=TRUE, echo=FALSE}
+# Methods Standard text
+  methodstext <- "The common protein disorder predictors VLXT, VSL2 [link](http://www.pondr.com) and the metapredictor PONDRFIT [link](http://original.disprot.org/pondr-fit.php) that are being provided by the input file are analyzed and visualized "
+methodstext
+```
+
+## Results
+```{r resultsssection), eval=TRUE, echo=FALSE}
+# Results and Discussion Standard text
+  resultstext <- "These are the results"
+resultstext
+```
+
+```{r firstgraphs), eval=TRUE, echo=FALSE}
+# have the desired data file in working directory under name "dataset.xlsx".
+# The persent disorder scores have to have the names VLXT, VSL2 and PONDRFIT.
+# VLXT and VSL2 are in the dataset as "30"% while PONDRFIT is a decimal (0.3) so
+# I will multiply PONDRFIT by 100
+  dataset <- read_excel("dataset.xlsx")
+# first group of graphs: Title "Frequency Distribution of __ Disorder Score"
+# Frequency and relative frequency plot in one graph with overlayed curve for 
+# VLXT%, VSL2% and PONDR-FIT% in 10% increments. Side by side with corresponding 
+# pie chart in 10% increments.
+    
+# VLXT --------------------------------------------------
+# VLXTVector <- 100*dataset$VLXT
+  VLXTVector <- dataset$VLXT  
+# Cut data into sections
+# breaks = 0:10
+  breaks <- c(0,10,20,30,40,50,60,70,80,90,100) 
+    
+# Cut data into sections
+  VLXTVector.cut = cut(VLXTVector, breaks, right=FALSE)
+  VLXTVector.freq = table(VLXTVector.cut) 
+    
+# Calculate relative frequency
+  VLXTVector.relfreq = VLXTVector.freq / length(VLXTVector) 
+    
+# Parse to a list to use xyplot later and assigning x values
+  VLXTVector.list <- list(x = c(10,20,30,40,50,60,70,80,90,100), 
+                          y = as.vector(VLXTVector.relfreq))
+#Build histogram and relative frequency curve
+  hist1 <- histogram(VLXTVector, breaks = 10, freq = TRUE, col='skyblue',
+                     xlab="VLXT % Disorder", 
+                     ylab="Frequency", 
+                     main="Frequency Distribution of the Percent Disorder Score", 
+                     plot=FALSE)
+  relFreqCurve <- xyplot(y ~ x, VLXTVector.list, type="l", 
+                     ylab = "Relative frequency", ylim=c(0,1))
+    
+# Build double objects plot
+  histgraph <- as.grob(doubleYScale(hist1, relFreqCurve, add.ylab2 = TRUE))
+  piegraph <- base2grob(~pie(VLXTVector.freq, labels = breaks))
+# grid.arrange(histgraph, nrow = 1)
+  grid.arrange(histgraph,piegraph, nrow = 1)
+  
+#VSL2 --------------------------------------------------
+VSL2Vector <- dataset$VSL2
+#Cut data into sections
+#breaks = 0:10
+breaks <- c(0,10,20,30,40,50,60,70,80,90,100) 
+
+#Cut data into sections
+VSL2Vector.cut = cut(VSL2Vector, breaks, right=FALSE)
+VSL2Vector.freq = table(VSL2Vector.cut) 
+
+#Calculate relative frequency
+VSL2Vector.relfreq = VSL2Vector.freq / length(VSL2Vector) 
+
+#Parse to a list to use xyplot later and assigning x values
+VSL2Vector.list <- list(x = c(10,20,30,40,50,60,70,80,90,100), 
+                        y = as.vector(VSL2Vector.relfreq))
+#Build histogram and relative frequency curve
+hist1 <- histogram(VSL2Vector, breaks = 10, freq = TRUE, col='skyblue', 
+                   xlab="VSL2 % Disorder", 
+                   ylab="Frequency", main="Histogram with Normal Curve",
+                   plot=FALSE)
+relFreqCurve <- xyplot(y ~ x, VSL2Vector.list, type="l", 
+                       ylab = "Relative frequency", ylim=c(0,1))
+
+#Build double objects plot
+doubleYScale(hist1, relFreqCurve, add.ylab2 = TRUE)
+pie(VSL2Vector.freq, labels = breaks)
+
+#PONDRFIT --------------------------------------------------
+PONDRFITVector <- 100*dataset$VLXT
+#Cut data into sections
+#breaks = 0:10
+breaks <- c(0,10,20,30,40,50,60,70,80,90,100) 
+
+#Cut data into sections
+PONDRFITVector.cut = cut(PONDRFITVector, breaks, right=FALSE)
+PONDRFITVector.freq = table(PONDRFITVector.cut) 
+
+#Calculate relative frequency
+PONDRFITVector.relfreq = PONDRFITVector.freq / length(PONDRFITVector) 
+
+#Parse to a list to use xyplot later and assigning x values
+PONDRFITVector.list <- list(x = c(10,20,30,40,50,60,70,80,90,100), 
+                            y = as.vector(PONDRFITVector.relfreq))
+#Build histogram and relative frequency curve
+hist1 <- histogram(PONDRFITVector, breaks = 10, freq = TRUE, col='skyblue', xlab="PONDRFIT % Disorder", 
+                   ylab="Frequency", main="Histogram with Normal Curve",
+                   plot=FALSE)
+relFreqCurve <- xyplot(y ~ x, PONDRFITVector.list, type="l", 
+                       ylab = "Relative frequency", ylim=c(0,1))
+
+#Build double objects plot
+doubleYScale(hist1, relFreqCurve, add.ylab2 = TRUE)
+pie(PONDRFITVector.freq, labels = breaks)
+#pie3D(VLXTVector.freq)
+
+```
+
+
+```{r secondgraphs), eval=TRUE, echo=FALSE}
+# second group of graphs:
+# grouped frequency. Displays VLXT, SL2 and PONDRFIT next to each other for the 3 groups
+predictor <- "VLXT"
+dataset$groupedVLXT <- cut(dataset$VLXT, c(-Inf, 0.1,0.3, Inf),
+                          labels=c("0 to 10", "10 to 30", "greater 30"))
+groups <- "0 to 10"
+occurences <- sum(dataset$groupedVLXT == "0 to 10")
+groups <- c(groups, "10 to 30")
+occurences <- c(occurences, sum(dataset$groupedVLXT == "10 to 30"))
+groups <- c(groups, "greater 30")
+occurences <- c(occurences, sum(dataset$groupedVLXT == "greater 30"))
+
+groupedplot <- data.frame(groups, occurences, predictor)
+
+#save this info to make pie charts later
+pieVLXT <- occurences
+
+#VSL2-------------------------------------------------------
+predictor <- "VSL2"
+
+dataset$groupedVSL2 <- cut(dataset$VSL2, c(-Inf, 0.1,0.3, Inf),
+                           labels=c("0 to 10", "10 to 30", "greater 30"))
+groups <- "0 to 10"
+occurences <- sum(dataset$groupedVSL2 == "0 to 10")
+groups <- c(groups, "10 to 30")
+occurences <- c(occurences, sum(dataset$groupedVSL2 == "10 to 30"))
+groups <- c(groups, "greater 30")
+occurences <- c(occurences, sum(dataset$groupedVSL2 == "greater 30"))
+
+groupedVSL2 <- data.frame(groups, occurences, predictor)
+# rbind adds rows to data frame
+groupedplot <- rbind(groupedplot, groupedVSL2)
+
+#save this info to make pie charts later
+pieVSL2 <- occurences
+
+#PONDR FIT-------------------------------------------
+predictor <- "PONDRFIT"
+dataset$groupedPONDRFIT <- cut(dataset$PONDRFIT, c(-Inf, 0.1,0.3, Inf),
+                           labels=c("0 to 10", "10 to 30", "greater 30"))
+groups <- "0 to 10"
+occurences <- sum(dataset$groupedPONDRFIT == "0 to 10")
+groups <- c(groups, "10 to 30")
+occurences <- c(occurences, sum(dataset$groupedPONDRFIT == "10 to 30"))
+groups <- c(groups, "greater 30")
+occurences <- c(occurences, sum(dataset$groupedPONDRFIT == "greater 30"))
+
+groupedPONDRFIT <- data.frame(groups, occurences, predictor)
+# rbind adds rows to data frame
+groupedplot <- rbind(groupedplot, groupedPONDRFIT)
+
+#save this info to make pie charts later
+piePONDRFIT <- occurences
+
+#ggplot displays the x axis=groups alphabetically (>30 first). I don't want that
+#the factor function creates a vector of categorical data that ggplot uses to sort
+#mutate(groupedplot = factor(groupedplot, levels=c("north", "north-east", "east", 
+#                "south-east", "south", "south-west", "west", "north-west")))
+#groupedplot$groups <- factor(groupedplot$groups, 
+#                             levels = c("0to10", "10to30", ">30"))
+#x$name <- factor(x$name, levels = x$name[order(x$val)])
+#groupedplot$groups <- factor(groupedplot$groups,levels=groupedplot$groups[order(x$val)])
+                           
+----------------------------------------------------------------------------------
+# position="dodge" places the bars next to each other 
+# other possibility would be position="stack"
+ggplot(groupedplot, aes(fill=predictor, y=occurences, x=groups)) + 
+  geom_bar(position="dodge", stat="identity")
+
+# pie charts
+pie(pieVXLT, labels = groups)
+pie(pieVSL2, labels = groups)
+pie(piePONDRFIT, labels = groups)
+```
+
+```{r thirdgraphs), eval=TRUE, echo=FALSE}
+# 3D scatterplot
+#colors <- c("#999999", "#E69F00", "#56B4E9")
+#colors <- colors[as.numeric(dataset$disease)]
+#scatterplot3d(iris[,1:3], pch = 16, color=colors)
+scatterplot3d(dataset$PONDRFIT, dataset$VLXT, dataset$VSL2)
+```
+
+Fig 1: Scatter plot 1 
+
