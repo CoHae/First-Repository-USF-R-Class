@@ -128,7 +128,7 @@ doubleYScale(hist1, relFreqCurve, add.ylab2 = TRUE)
 pie(VSL2Vector.freq, labels = breaks)
 
 #PONDRFIT --------------------------------------------------
-PONDRFITVector <- 100*dataset$VLXT
+PONDRFITVector <- 100*dataset$PONDRFIT
 #Cut data into sections
 #breaks = 0:10
 breaks <- c(0,10,20,30,40,50,60,70,80,90,100) 
@@ -162,7 +162,7 @@ pie(PONDRFITVector.freq, labels = breaks)
 # second group of graphs:
 # grouped frequency. Displays VLXT, SL2 and PONDRFIT next to each other for the 3 groups
 predictor <- "VLXT"
-dataset$groupedVLXT <- cut(dataset$VLXT, c(-Inf, 0.1,0.3, Inf),
+dataset$groupedVLXT <- cut(dataset$VLXT, c(-Inf, 10,30, Inf),
                           labels=c("0 to 10", "10 to 30", "greater 30"))
 groups <- "0 to 10"
 occurences <- sum(dataset$groupedVLXT == "0 to 10")
@@ -179,7 +179,7 @@ pieVLXT <- occurences
 #VSL2-------------------------------------------------------
 predictor <- "VSL2"
 
-dataset$groupedVSL2 <- cut(dataset$VSL2, c(-Inf, 0.1,0.3, Inf),
+dataset$groupedVSL2 <- cut(dataset$VSL2, c(-Inf, 10,30, Inf),
                            labels=c("0 to 10", "10 to 30", "greater 30"))
 groups <- "0 to 10"
 occurences <- sum(dataset$groupedVSL2 == "0 to 10")
@@ -197,7 +197,7 @@ pieVSL2 <- occurences
 
 #PONDR FIT-------------------------------------------
 predictor <- "PONDRFIT"
-dataset$groupedPONDRFIT <- cut(dataset$PONDRFIT, c(-Inf, 0.1,0.3, Inf),
+dataset$groupedPONDRFIT <- cut(dataset$PONDRFIT, c(-Inf, 10,30, Inf),
                            labels=c("0 to 10", "10 to 30", "greater 30"))
 groups <- "0 to 10"
 occurences <- sum(dataset$groupedPONDRFIT == "0 to 10")
@@ -229,7 +229,7 @@ ggplot(groupedplot, aes(fill=predictor, y=occurences, x=groups)) +
   geom_bar(position="dodge", stat="identity")
 
 # pie charts
-pie(pieVXLT, labels = groups)
+pie(pieVLXT, labels = groups)
 pie(pieVSL2, labels = groups)
 pie(piePONDRFIT, labels = groups)
 ```
@@ -239,7 +239,17 @@ pie(piePONDRFIT, labels = groups)
 #colors <- c("#999999", "#E69F00", "#56B4E9")
 #colors <- colors[as.numeric(dataset$disease)]
 #scatterplot3d(iris[,1:3], pch = 16, color=colors)
-scatterplot3d(dataset$PONDRFIT, dataset$VLXT, dataset$VSL2)
+dataset$PONDRFIT <- 100* dataset$PONDRFIT
+scatterplot3d(dataset$PONDRFIT, dataset$VLXT, dataset$VSL2,
+               pch = 16, 
+              xlab = "PONDR_FIT",
+              ylab = "VLXT",
+              zlab = "VSL2",
+              xlim=c(0,100),
+              ylim=c(0,100),
+              zlim=c(0,100)
+              )
+dataset$PONDRFIT <- dataset$PONDRFIT/100
 ```
 
 Fig 1: Scatter plot 1 
