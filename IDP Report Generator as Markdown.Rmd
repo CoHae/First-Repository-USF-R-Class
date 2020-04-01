@@ -229,9 +229,26 @@ ggplot(groupedplot, aes(fill=predictor, y=occurences, x=groups)) +
   geom_bar(position="dodge", stat="identity")
 
 # pie charts
-pie(pieVLXT, labels = groups)
-pie(pieVSL2, labels = groups)
-pie(piePONDRFIT, labels = groups)
+pct <- round(pieVLXT/sum(pieVLXT)*100)
+pielables <- paste(groups, pct) # add percents to labels
+pielables <- paste(pielables,"%",sep="") # ad % to labels
+
+pie(pieVLXT, labels = pielables, col=rainbow(length(pielables)),
+    main = "VLXT % Disorder Score")
+
+pct <- round(pieVSL2/sum(pieVSL2)*100)
+pielables <- paste(groups, pct) # add percents to labels
+pielables <- paste(pielables,"%",sep="") # ad % to labels
+
+pie(pieVSL2, labels = pielables, col=rainbow(length(pielables)),
+    main = "VSL2 % Disorder Score")
+
+pct <- round(piePONDRFIT/sum(piePONDRFIT)*100)
+pielables <- paste(groups, pct) # add percents to labels
+pielables <- paste(pielables,"%",sep="") # ad % to labels
+
+pie(piePONDRFIT, labels = pielables, col=rainbow(length(pielables)),
+    main = "PONDRFIT % Disorder Score")
 ```
 
 ```{r thirdgraphs), eval=TRUE, echo=FALSE}
